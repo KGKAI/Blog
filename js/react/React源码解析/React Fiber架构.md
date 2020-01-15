@@ -202,8 +202,7 @@ function performUnitOfWork(fiber: Fiber, topWork: Fiber) {
 }
 
 ```
-Fiber 包含的属性可以划分为 5 个部分:
-- 🆕 结构信息 - 这个上文我们已经见过了，Fiber 使用链表的形式来表示节点在树中的定位
+Fiber 包含的属性可以划分为 5 个部分:这个上文我们已经见过了，Fiber 使用链表的形式来表示节点在树中的定位
 - 节点类型信息 - 这个也容易理解，tag表示节点的分类、type 保存具体的类型值，如div、MyComp
 - 节点的状态 - 节点的组件实例、props、state等，它们将影响组件的输出
 - 🆕 副作用 - 这个也是新东西. 在 Reconciliation 过程中发现的'副作用'(变更需求)就保存在节点的effectTag 中(想象为打上一个标记).那么怎么将本次渲染的所有节点副作用都收集起来呢？ 这里也使用了链表结构，在遍历过程中React会将所有有‘副作用’的节点都通过nextEffect连接起来
