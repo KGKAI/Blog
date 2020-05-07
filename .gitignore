@@ -1,0 +1,40 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.idea
+/.vscode
+
+# production
+/build
+package-lock.json
+/.idea
+/out
+/dist
+
+# next
+/.next
+
+# misc
+.DS_Store
+
+# log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/logs
+
+*.swp
+*.iml
+
+*.cache
+.cache-loader
+yarn.lock
+
+# idea
+.idea/*
+.jshintrc
+
+financial-instrument.iml
+
+.history/*
