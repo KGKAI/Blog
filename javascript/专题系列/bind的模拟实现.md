@@ -5,7 +5,7 @@
 
 ## 代码实现
 
-```
+```javascript
 Function.prototype.bind2 = function (context) {
 
     if (typeof this !== "function") {
