@@ -20,7 +20,7 @@ Function.prototype.bind2 = function (context) {
         self.apply(this instanceof self ? this : context, args.concat(Array.prototype.slice.call(arguments)));
     }
 
-    fNOP.prototype = this.prototype;
+    fNOP.prototype = self.prototype;
     fbound.prototype = new fNOP();
 
     return fbound;

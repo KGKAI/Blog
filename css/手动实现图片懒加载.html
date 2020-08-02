@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>lazy-load</title>
+    <style>
+        html,
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .container img {
+            width: 50%;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="http://img4.imgtn.bdimg.com/it/u=1878067600,3935137756&fm=200&gp=0.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="http://img3.imgtn.bdimg.com/it/u=346230831,1833217134&fm=200&gp=0.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p3.ssl.qhimgs1.com/sdr/400__/t01678fb48c7fc2de99.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p0.ssl.qhimgs1.com/sdr/400__/t01ad9a266ccb869064.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p3.ssl.qhimgs1.com/sdr/400__/t013e365ee605a216e9.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p3.ssl.qhimgs1.com/sdr/400__/t01d32b580344adff93.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p5.ssl.qhimgs1.com/sdr/400__/t01c301b9d7753c1c4f.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p2.ssl.qhimgs1.com/sdr/400__/t01d7df0764e1cf0e02.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p3.ssl.qhimgs1.com/sdr/400__/t01c4d2f812116f7e8d.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p0.ssl.qhimgs1.com/sdr/400__/t01d414d58f43519826.jpg">
+        <img src="http://s4.sinaimg.cn/mw690/006uWPTUgy72CNFYNjB93&690"
+            data-src="https://p1.ssl.qhimgs1.com/sdr/400__/t010cb2a916e4dd2d2b.jpg">
+    </div>
+    <script>
+        // 参考链接：https://www.cnblogs.com/wannananana/p/12084545.html
+        function start() {
+            let imgs = document.querySelectorAll('img')
+            imgs.forEach(img => {
+                if (!img.getAttribute('loaded')) {
+                    if (window.innerHeight + document.documentElement.scrollTop >= img.offsetTop) {
+                        img.src = img.getAttribute('data-src')
+                        img.setAttribute('loaded', true)
+                    }
+                }
+            })
+        }
+
+        function throttle(fn, wait) {
+            let timeout
+            return function() {
+                if (!timeout) {
+                    timeout = setTimeout(() => {
+                        fn()
+                        timeout = null
+                    }, wait);
+                }
+            }
+        }
+
+        window.onload = window.onscroll = throttle(start, 200)
+    </script>
+</body>
+
+</html>
+
