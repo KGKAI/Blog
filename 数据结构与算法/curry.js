@@ -2,7 +2,7 @@ function curry(fn) {
     let length = fn.length;     // 参数的长度
     let args = [].slice.call(arguments, 1)  // 部分参数
     return function() {
-        args = args.concat([...arguments]);
+        args = args.concat(...arguments);
         if (args.length < length) {
             return curry.call(this, fn, ...args)
         } else {

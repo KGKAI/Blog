@@ -23,4 +23,4 @@ function findContinuousSequence(target) {
     return res
 }
 
-console.log(findContinuousSequence(30))
+console.log(findContinuousSequence(15))

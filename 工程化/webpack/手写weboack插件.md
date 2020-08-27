@@ -1,0 +1,7 @@
+# 简介
+在webpack运行的生命周期中会广播出许多事件，plugin可以监听这些事件，在合适的时机可以通过webpack提供的API改变输出结果
+# compiler和compilation
+- compiler包含了webpack环境所有的配置信息，包含options、hook、loaders、plugins这些信息，这个对象在webpack启动时被实例化，它是全局唯一的（可以简单地将其理解为webpack实例）
+- compilation包含了当前的模块资源、编译生成资源、变化的文件等。当webpack以开发模式运行时，每当检测到一个文件变化，一次新的compilation将被创建。compilation对象也提供了很多事件回调供插件做扩展。通过compilation也能访问到compiler
+
+> 区别: compiler代表了整个webpack从启动到关闭的生命周期，而compilation只代表了一次新的编译

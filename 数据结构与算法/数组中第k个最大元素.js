@@ -7,7 +7,7 @@ var findKthLargest = function(nums, k) {
 
 function quickSearch(nums, from, to, k) {
     let j = partition(nums, from, to)
-    if (j ===  k) {
+    if (j === k) {
         return nums[j]
     }
 
