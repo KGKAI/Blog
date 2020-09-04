@@ -2,7 +2,6 @@
 // 将其排列成一个新数组，要求新数组形式如下，例如 [[2, 3, 4, 5], [10, 11], [20]]。
 function sortArray(arr) {
     let res = []
-    arr.sort()
     for (let i = 0; i < arr.length; i++) {
         let index = parseInt(arr[i] / 10)
         if (!res[index]) {

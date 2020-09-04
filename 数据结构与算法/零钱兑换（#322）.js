@@ -1,6 +1,6 @@
 // 递归（自顶向下）
 var coinChange = function(coins, amount) {
-    if (amount < 1) return 0
+  if (amount < 1) return 0
   let count = [];
   return _coinChange(coins, amount, count);
 };

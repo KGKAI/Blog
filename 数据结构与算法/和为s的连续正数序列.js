@@ -1,5 +1,5 @@
+// 滑动窗口
 function findContinuousSequence(target) {
-    debugger
     let i = 1, j = 1, sum = 0, res = []
     while(i <= parseInt(target / 2)) {
         if (sum < target) {

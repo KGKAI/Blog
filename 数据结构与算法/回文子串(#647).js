@@ -1,3 +1,4 @@
+// 回文中心
 var countSubstrings = function(s) {
     const n = s.length;
     let ans = 0;

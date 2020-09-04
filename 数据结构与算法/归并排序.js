@@ -1,7 +1,6 @@
 function mergeSort(nums) {
     if (nums.length <= 1) return nums;
 
-    debugger
     let mid = Math.floor((nums.length) / 2)
     let left = mergeSort(nums.slice(0, mid))
     let right = mergeSort(nums.slice(mid, nums.length))

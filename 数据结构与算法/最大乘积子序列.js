@@ -1,5 +1,4 @@
 var maxProduct = function(nums) {
-  debugger;
   let max = -Infinity,
     imax = 1,
     imin = 1;
