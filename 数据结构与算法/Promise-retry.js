@@ -34,4 +34,4 @@ function getData(){
   }
 
   let p = myGetData(getData, 5)
-  console.log(p)
+  p.then(v => console.log(v), r => console.log(r))

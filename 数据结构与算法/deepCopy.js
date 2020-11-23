@@ -1,112 +1,45 @@
-
-// let obj = {a: 1, inside: {b: 2}, c: [1, 2, 3]}
-// let = newObj = deepCopy(obj)
-// obj.inside.b = 3
-// console.log(obj)
-// console.log(newObj)
-
-// function deepCopyBFS(origin) {      // 广度优先
-//     let target = Array.isArray(origin) ? [] : {}
-//     let queue = [[origin, target]];
-
-//     while(queue.length) {
-//         let [ori, tar] = queue.shift();
-//         Object.keys(ori).forEach(key => {
-//             let value = ori[key];
-//             if (ori.hasOwnProperty(key)) {
-//                 if (typeof value === "object") {
-//                     tar[key] = Array.isArray(value) ? [] : {}
-//                     queue.push([value, tar[key]]);
-//                 } else {
-//                     tar[key] = value;
-//                 }
-//             }
-//         })
-//     }
-
-//     return target;
-// }
-
-function deepCopyBFS(origin) {      // 层序深拷贝
-    if (typeof origin !== "object") return origin
-    
-    let target = Array.isArray(origin) ? [] : {}
-    let map = new Map()
-    map.set(origin, target)
-    let queue = [[origin, target]];
-
-    while(queue.length) {
-        let [ori, tar] = queue.shift();
-        Object.keys(ori).forEach(key => {
-            let value = ori[key];
-            if (ori.hasOwnProperty(key)) {
-                if (map.get(value)) {
-                    tar[key] = map.get(value);
-                } else {
-                    if (typeof value === "object") {
-                        tar[key] = Array.isArray(value) ? [] : {}
-                        queue.push([ori[key], tar[key]]);
-                        map.set(ori[key], tar[key])
-                    } else {
-                        tar[key] = value;
-                    }
-                }
-            }
-        });
-    }
-
-    return target;
-}
-
-let obj = {a: 1, inside: {b: 2}, c: [1, 2, 3]}
-obj.d = obj
-obj.inside.f = obj
-// let newObj = deepCopyBFS(obj)
-// console.log(newObj)
-
-// let newObj2 = deepCopyBFS([1, 2, [3, 4], [5, [6, [7, 8]]]])
-// console.log(newObj2)
-
-function getEmpty(o){
-	if(Object.prototype.toString.call(o) === '[object Object]'){
-		return {};
+// 处理循环引用、Date、Error对象和symbol
+// https://github.com/yygmind/blog/issues/29
+function deepCopy(obj, map = new WeakMap()) {
+	if (!isObject(obj)) {
+	  return obj
 	}
-	if(Object.prototype.toString.call(o) === '[object Array]'){
-		return [];
+  
+	if (map.has(obj)) {
+	  return map.get(obj)
 	}
-	return o;
-}
-
-function deepCopyDFS(origin){
-	let stack = [];
-	let map = new Map(); // 记录出现过的对象，用于处理环
-
-	let target = getEmpty(origin);
-	if(target !== origin){
-		stack.push([origin, target]);
-		map.set(origin, target);
+  
+	let result = Array.isArray(obj) ? [] : new obj.constructor()
+	map.set(obj, result)
+	let symbols = Object.getOwnPropertySymbols(obj)
+	if (symbols.length) {
+	  symbols.forEach(key => {
+		result[key] = isObject(obj[key]) ? deepCopy(obj[key], map) : obj[key]
+	  })
 	}
-
-	while(stack.length){
-		let [ori, tar] = stack.pop();
-		for(let key in ori){
-			// 处理环状
-			if(map.get(ori[key])){
-				tar[key] = map.get(ori[key]);
-				continue;
-			}
-
-			tar[key] = getEmpty(ori[key]);
-			if(tar[key] !== ori[key]){
-				stack.push([ori[key], tar[key]]);
-				map.set(ori[key], tar[key]);
-			}
-		}
-	}
-
-	return target;
-}
-
-
-let newObj = deepCopyDFS(obj)
-console.log(newObj)
+	Object.keys(obj).forEach(key => {
+	  if (Object.prototype.hasOwnProperty.call(obj, key)) {
+		result[key] = isObject(obj[key]) ? deepCopy(obj[key], map) : obj[key]
+	  }
+	})
+  
+	return result
+  }
+  
+  function isObject(val) {
+	return val !== null && typeof val === "object"
+  }
+  
+  function test() {
+	this.a = 1
+	this.b = { c: 2, d: [3, 4]}
+	this.e = new Date()
+  }
+  
+  test.prototype.f = 20
+  let g = Symbol('g')
+  let h = Symbol('h')
+  let t = new test()
+  t[g] = "gggggg"
+  t[h] = "hhhhhh"
+  console.log(deepCopy(t))

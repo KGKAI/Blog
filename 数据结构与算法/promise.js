@@ -141,7 +141,11 @@ function resolvePromise(promise2, x, resolve, reject) {
     }
 }
 
-MyPromise.prototype.race = function(array) {
+MyPromise.prototype.catch = function(onRejection) {
+    return this.then(undefined, onRejection)
+}
+
+MyPromise.race = function(array) {
     return new MyPromise(function (resolve, reject) {
         if (!Array.isArray) {
             return reject('must array')
@@ -154,7 +158,7 @@ MyPromise.prototype.race = function(array) {
     }); 
 }
 
-MyPromise.prototype.all = function(array) {
+MyPromise.all = function(array) {
     return new MyPromise(function(resolve, reject) {
         if (!Array.isArray) {
             return reject("must error")
@@ -178,7 +182,7 @@ MyPromise.prototype.all = function(array) {
     });
 }
 
-MyPromise.prototype.allSettled = function(array) {
+MyPromise.allSettled = function(array) {
     return new MyPromise((resolve, reject) => {
         if (!Array.isArray(array)) return reject("error");
 
@@ -204,7 +208,7 @@ MyPromise.prototype.allSettled = function(array) {
     })
 }
 
-MyPromise.prototype.any = function(array) {
+MyPromise.any = function(array) {
     return new MyPromise((resolve, reject) => {
         let result = [];
         let length = array.length;
@@ -223,6 +227,6 @@ MyPromise.prototype.any = function(array) {
     })
 }
 
-MyPromise.prototype.resolve = function(arg) {
+MyPromise.resolve = function(arg) {
     return arg instanceof MyPromise ? arg : new MyPromise(resolve => resolve(arg))
 }
