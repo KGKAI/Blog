@@ -31,5 +31,5 @@ function merge(arr1, arr2) {
 
 // let arr = [3, 4, 6, 1, 2, 7, 9, 5, 8]
 // let arr = [2, 0, 0, 0, 0, 1]
-let arr =[9, 8, 7, 6, 5, 4, 3, 2, 1]
+let arr =[11, 9, 8, 10, 7, 6, 5, 4, 3, 2, 1]
 console.log(mergeSort(arr))

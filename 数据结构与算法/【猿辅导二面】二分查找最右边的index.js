@@ -24,9 +24,9 @@
 // }
 
 function search(nums, target) {
-    let low = 0, high = nums.length - 1, mid = 0
+    let low = 0, high = nums.length - 1
     while(low <= high) {
-        mid = parseInt((low + high) / 2)
+        let mid = parseInt((low + high) / 2)
         if (nums[mid] === target && nums[mid + 1] !== target) {
             return mid
         } else if (nums[mid] <= target) {

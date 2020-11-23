@@ -49,4 +49,4 @@ function dfs(candidates, target, begin, path, paths) {
     }
 }
 
-console.log(combinationSum([2,3,6,7], 7))
+console.log(combinationSum([2,3,5], 8))

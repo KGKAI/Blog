@@ -1,5 +1,5 @@
  
-```
+```js
 function objectFactory() {
     var obj = new Object();
     var Constructor = [].shift.call(arguments);

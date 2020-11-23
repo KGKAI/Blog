@@ -283,7 +283,7 @@ MyPromise.prototype.retry = function(p, times) {
 # promise的弊端
 1.  延时执行
 2.  promise一旦执行，无法撤销
-3.  pendi                                                                      ng状态的时候，无法得知执行到哪一步
+3.  pending状态的时候，无法得知执行到哪一步
 4.  promise会吞掉内部的错误，不会反映到外部
 
 # 参考链接

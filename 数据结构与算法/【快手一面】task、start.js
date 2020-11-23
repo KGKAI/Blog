@@ -17,7 +17,7 @@ Queue.prototype.task = function(timeout, cb) {
 Queue.prototype.start = function() {
     let self = this
     function _start() {
-        if (self.tasks.length) {
+        if (self.tasks.length > 0) {
             let cb = self.tasks.shift()
             Promise.resolve(cb()).then(() => {
                 _start()                           
