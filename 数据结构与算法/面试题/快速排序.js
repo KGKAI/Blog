@@ -1,4 +1,5 @@
 function quickSort(arr, from, to) {
+    // 以第一个元素为基准元素
     let i = from, j = to, key = arr[from]
     if(from >= to) return
     while(i < j) {
@@ -18,6 +19,25 @@ function quickSort(arr, from, to) {
     quickSort(arr, i + 1, to)
 }
 
+// function quickSort(arr) {
+//     // 阮一峰版，相对容易理解
+//     if (arr.length <= 1) return arr;
+//     let l = 0, r = arr.length - 1;
+//     let pivotIndex = l + Math.floor((r - l) / 2);
+//     let pivot = arr.splice(pivotIndex, 1)[0];
+  
+//     let left = [], right = [];
+//     for (let i = 0; i < arr.length; i++) {
+//       if (arr[i] < pivot) {
+//         left.push(arr[i]);
+//       } else {
+//         right.push(arr[i]);
+//       }
+//     }
+  
+//     return quickSort(left).concat(pivot, quickSort(right));
+// }
+  
 // let arr = [6,1,2,7,9,3,4,5,10,8]
 let arr = [10, 9, 8,7,6,5,4,3,2,1]
 quickSort(arr, 0, arr.length - 1)
