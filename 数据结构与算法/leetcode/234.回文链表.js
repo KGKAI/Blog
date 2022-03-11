@@ -16,8 +16,21 @@
  * @param {ListNode} head
  * @return {boolean}
  */
-var isPalindrome = function(head) {
+var isPalindrome = function (head) {
+    if (!head) return true;
+    let arr = [];
+    while (head) {
+        arr.push(head);
+        head = head.next;
+    }
 
+    for (let i = 0, j = arr.length - 1; i < j; i++, j--) {
+        if (arr[i].val !== arr[j].val) {
+            return false;
+        }
+    }
+
+    return true;
 };
 // @lc code=end
 

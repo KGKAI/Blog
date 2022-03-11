@@ -9,36 +9,37 @@
  * @param {string} digits
  * @return {string[]}
  */
- var letterCombinations = function (digits) {
-    if (!digits) return []
-    const res = []
+ var letterCombinations = function(digits) {
+    const res = [];
+    if (!digits.length) return res;
     const map = {
-        2: 'abc',
-        3: 'def',
-        4: 'ghi',
-        5: 'jkl',
-        6: 'mno',
-        7: 'pqrs',
-        8: 'tuv',
-        9: 'wxyz'
-    }
+        "2": "abc",
+        "3": "def",
+        "4": "ghi",
+        "5": "jkl",
+        "6": "mno",
+        "7": "pqrs",
+        "8": "tuv",
+        "9": "wxyz"
+    };
+    const path = [];
 
-    const path = '', begin = 0
-    function dfs(path, begin) {
+    function recursive(start) {
         if (path.length === digits.length) {
-            res.push(path)
+            res.push(path.join(''));
             return;
         }
-        
-        // 数字对应的字符串
-        const strs = map[digits[begin]];
-        for (let j = 0; j < strs.length; j++) {
-            const str = strs[j];
-            dfs(path + str, begin + 1)
+        for (let i = start; i < digits.length; i++) {
+            const chars = map[digits[i]];
+            for (let j = 0; j < chars.length; j++) {
+                path.push(chars[j]);
+                recursive(i + 1);
+                path.pop();
+            }
         }
     }
 
-    dfs(path, begin)
+    recursive(0);
     return res;
 };
 // @lc code=end

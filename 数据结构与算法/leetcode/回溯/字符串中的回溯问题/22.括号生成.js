@@ -10,29 +10,25 @@
  * @return {string[]}
  */
 var generateParenthesis = function(n) {
-    const res = []
-
-    dfs('', n, n)
-    function dfs(path, left, right) {   // left right 是剩余可用的括号数量
+    const res = [];
+    
+    function dfs(path, left, right) {
         if (left === 0 && right === 0) {
-            res.push(path)
-            return
-        }
-
-        if (left > right) {
-            return
+            res.push(path);
+            return;
         }
 
         if (left > 0) {
             dfs(path + '(', left - 1, right)
         }
 
-        if (right > 0) {
+        if (right > left) {
             dfs(path + ')', left, right - 1)
         }
     }
 
-    return res
+    dfs('', n, n);
+    return res;
 };
 // @lc code=end
 

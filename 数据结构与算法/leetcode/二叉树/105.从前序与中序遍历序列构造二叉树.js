@@ -19,16 +19,18 @@
  * @return {TreeNode}
  */
 var buildTree = function (preorder, inorder) {
-    if (!preorder.length || !inorder.length) return null;
-    
-    let rootVal = preorder[0];
-    let rootIndex = inorder.indexOf(rootVal);
-    
-    let root = new TreeNode(rootVal);
-    root.left = buildTree(preorder.slice(1, 1 + rootIndex), inorder.slice(0, rootIndex))
-    root.right = buildTree(preorder.slice(1 + rootIndex), inorder.slice(1 + rootIndex))
+    return helper(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
 
-    return root;
+    function helper(preorder, start1, end1, inorder, start2, end2) {
+        if (start1 > end1 || start2 > end2) return null;
+
+        const rootVal = preorder[start1];
+        const index = inorder.indexOf(rootVal);
+        const root = new TreeNode(rootVal);
+        root.left = helper(preorder, start1 + 1, start1 + 1 + index - start2 - 1, inorder, start2, index - 1);
+        root.right = helper(preorder, start1 + index - start2 + 1, end1, inorder, index + 1, end2);
+        return root;
+    }
 };
 // @lc code=end
 

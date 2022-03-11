@@ -17,25 +17,51 @@
  * @param {TreeNode} root
  * @return {void} Do not return anything, modify root in-place instead.
  */
-var flatten = function(root) {
-    if (!root) return;
 
-    // 先展开左子树和右子树
-    flatten(root.left)
-    flatten(root.right)
+// https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--26/
 
-    let left = root.left;
-    let right = root.right;
+// 迭代方式
+// 维护一个变量记录上一个访问的节点，该节点的右子树为当前节点，左子树为null
+// 右子树先入栈，左子树后入栈
+// var flatten = function (root) {
+//     if (!root) return;
+//     const stack = [root];
+//     let prev = null;
+//     while (stack.length) {
+//         const node = stack.pop();
+//         if (prev) {
+//             prev.left = null;
+//             prev.right = node;
+//         }
+//         if (node.right) {
+//             stack.push(node.right);
+//         }
+//         if (node.left) {
+//             stack.push(node.left);
+//         }
+//         prev = node;
+//     }
+// };
 
-    // 根节点的右节点应该为展开后的左子树
-    root.left = null;
-    root.right = left;
-    // 把左子树和右子树拼接起来
-    let p = root;
-    while (p.right) {
-        p = p.right;
+// 1. 找到已当前节点为根结点的左子树的最右边节点A，以当前节点的右子树作为A的右子树
+// 2. 将左子树插入到右子树的地方
+var flatten = function (root) {
+    while (root) {
+        if (!root.left) {
+            root = root.right;
+        } else {
+            let pre = root.left;
+            while (pre.right) {
+                pre = pre.right;
+            }
+            pre.right = root.right;
+    
+            root.right = root.left;
+            root.left = null;
+    
+            root = root.right;
+        }
     }
-    p.right = right;
 };
 // @lc code=end
 
