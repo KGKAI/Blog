@@ -19,16 +19,17 @@
  */
 var convertBST = function(root) {
     let sum = 0;
-
-    function tranverse(root) {
+    
+    function dfs(root) {
         if (!root) return;
-        tranverse(root.right);
+
+        dfs(root.right);
         sum += root.val;
         root.val = sum;
-        tranverse(root.left);
+        dfs(root.left)
     }
 
-    tranverse(root)
+    dfs(root);
     return root;
 };
 // @lc code=end
