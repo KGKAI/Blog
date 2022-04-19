@@ -8,6 +8,11 @@
 /**
  * @param {number[][]} intervals
  * @return {number[][]}
+ * 首先按照start[i]升序排序
+ * 遍历intervals,设res的最后一个元素为last
+ *  - 当last[1]小于当前元素的left，不能合并，需要push当前元素进res
+ *  - 当last[1]大于或者等于当前元素的left，可以合并，更新last[1]的值为right和last[1]的最大值
+ *  - 返回res
  */
 var merge = function (intervals) {
     intervals.sort((interval1, interval2) => interval1[0] - interval2[0]);
