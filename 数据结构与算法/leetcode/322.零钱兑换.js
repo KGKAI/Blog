@@ -18,7 +18,7 @@ var coinChange = function (coins, amount) {
     const dp = new Array(amount + 1).fill(amount + 1);  // 需要看到dp[11]，所以数组长度是11 + 1
     // bad case 
     dp[0] = 0
-    for (let i = 0; i < dp.length; i++) {
+    for (let i = 1; i < dp.length; i++) {
         for (let coin of coins) {
             if (coin > i) continue;
             dp[i] = Math.min(dp[i], dp[i - coin] + 1)
