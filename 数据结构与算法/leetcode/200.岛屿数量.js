@@ -38,3 +38,9 @@ var numIslands = function (grid) {
 };
 // @lc code=end
 
+console.log(numIslands([
+    ["1", "1", "1", "1", "0"],
+    ["1", "1", "0", "1", "0"],
+    ["1", "1", "0", "0", "0"],
+    ["0", "0", "0", "0", "0"]
+]))

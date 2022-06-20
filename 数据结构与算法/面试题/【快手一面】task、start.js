@@ -5,10 +5,10 @@ function Queue() {
 Queue.prototype.task = function(timeout, cb) {
     this.tasks.push(() => {
         return new Promise((resolve, reject) => {
-        setTimeout(() => {
-             cb()
-             resolve()
-        }, timeout)                   
+            setTimeout(() => {
+                cb()
+                resolve()
+            }, timeout)
         })   
     }); 
     return this
