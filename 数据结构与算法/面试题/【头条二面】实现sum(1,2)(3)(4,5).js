@@ -10,8 +10,9 @@ function sum() {
         })
         return sum1
     }
-    sum1.toString = function() {
-        return total
+    sum1.__proto__.toString = function() {
+        console.log(total)
+        // return total
     }
     return sum1
 }

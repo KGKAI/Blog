@@ -8,7 +8,7 @@
 /**
  * @param {number[]} nums
  * @return {number}
- * 
+ *
  * dp[i]代表以nums[i]结尾的最长递增子序列的长度,转换方程是dp[i] = max(dp[i], dp[j] + 1)
  * dp[j]代表0...j结尾的最长递增子序列的长度
  * 因为是严格递增的，所以必须要在nums[i]>nums[j]时才更新dp[i],
@@ -28,5 +28,7 @@ var lengthOfLIS = function (nums) {
 
     return res;
 };
+
+console.log(lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]))
 // @lc code=end
 

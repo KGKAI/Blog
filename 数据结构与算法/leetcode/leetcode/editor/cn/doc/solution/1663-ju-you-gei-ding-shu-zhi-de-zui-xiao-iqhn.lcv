@@ -1,0 +1,126 @@
+### 解题思路
+
+这是个啥贪心，贪了，又好像没全贪，我二分为敬了。
+
+答题思路：
+
+尽量用a，可以有多少个a；尽量用b，可以有多少个b；依次类推。
+
+二分找这个尽量的数，以剩下用z补也能够为准。`够`就说明，尝试小了，`不够`尝试大了。
+
+以此二分。
+
+方法一：一个一个添加字符，直男干法。
+
+方法二：不一个个添加字符，尝试快速幂的方式添加字符。
+
+----
+
+##### [中等] 1802. 有界数组中指定下标处的最大值【贪心】【二分】[[贪心 + 二分 + long](https://leetcode-cn.com/problems/maximum-value-at-a-given-index-in-a-bounded-array/solution/1802-you-jie-shu-zu-zhong-zhi-ding-xia-b-pejc/)] [[1802. 有界数组中指定下标处的最大值](https://leetcode-cn.com/problems/maximum-value-at-a-given-index-in-a-bounded-array/)]
+
+##### [中等] 1663. 具有给定数值的最小字符串【贪心】【二分】【快速幂改】[[贪心 + 二分 + 快速幂改](https://leetcode.cn/problems/smallest-string-with-a-given-numeric-value/solution/1663-ju-you-gei-ding-shu-zhi-de-zui-xiao-iqhn/)] [[1663. 具有给定数值的最小字符串](https://leetcode.cn/problems/smallest-string-with-a-given-numeric-value/)]
+
+##### [中等] 372. 超级次方【数学】【分治】[[快速幂](https://leetcode-cn.com/problems/super-pow/solution/372-chao-ji-ci-fang-java-8052-by-wa-pian-mbe7/)] [[372. 超级次方](https://leetcode-cn.com/problems/super-pow/)]
+
+##### [中等] 1922. 统计好数字的数目【数学】【递归】【快速幂】[[数学快速幂](https://leetcode.cn/problems/count-good-numbers/solution/1922-tong-ji-hao-shu-zi-de-shu-mu-java-b-5mx6/)] [[1922. 统计好数字的数目](https://leetcode.cn/problems/count-good-numbers/)]
+
+### 代码
+
+执行用时：93 ms, 在所有 Java 提交中击败了14.07%的用户
+
+内存消耗：41.1 MB, 在所有 Java 提交中击败了95.56%的用户
+
+通过测试用例：94 / 94
+
+* java
+
+```java
+class Solution {
+	public String getSmallestString(int n, int k) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 1; i <= 26; i++) {
+			int size = this.size(n, k, i);
+			char c = (char) (i - 1 + 'a');
+			for (int j = 0; j < size; j++) {
+				sb.append(c);
+			}
+			n -= size;
+			k -= size * i;
+		}
+		return sb.toString();
+	}
+
+	private int size(int n, int k, int i) {
+		int l = 0, r = n;
+		int ans = 0;
+		while (l <= r) {
+			int m = ((r - l) >> 1) + l;
+			if (26 * (n - m) >= k - m * i) {
+				ans = m;
+				l = m + 1;
+			} else {
+				r = m - 1;
+			}
+		}
+		return ans;
+	}
+}
+```
+
+执行用时：3 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：41.8 MB, 在所有 Java 提交中击败了13.34%的用户
+
+通过测试用例：94 / 94
+
+* java
+
+```java
+class Solution {
+	public String getSmallestString(int n, int k) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 1; i <= 26; i++) {
+			int size = this.size(n, k, i);
+			char c = (char) (i - 1 + 'a');
+//			for (int j = 0; j < size; j++) {
+//				sb.append(c);
+//			}
+			sb.append(this.append(c, size));
+			n -= size;
+			k -= size * i;
+		}
+		return sb.toString();
+	}
+
+	public StringBuffer append(char c, int size) {
+		StringBuffer sb = new StringBuffer();
+		if (size == 0) {
+			return sb;
+		}
+		if (size == 1) {
+			return sb.append(c);
+		}
+		StringBuffer half = this.append(c, size >> 1);
+		if ((size & 1) == 0) {
+			return sb.append(half).append(half);
+		}
+		return sb.append(half).append(half).append(c);
+	}
+
+	private int size(int n, int k, int i) {
+		int l = 0, r = n;
+		int ans = 0;
+		while (l <= r) {
+			int m = ((r - l) >> 1) + l;
+			if (26 * (n - m) >= k - m * i) {
+				ans = m;
+				l = m + 1;
+			} else {
+				r = m - 1;
+			}
+		}
+		return ans;
+	}
+}
+```
+

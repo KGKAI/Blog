@@ -1,0 +1,34 @@
+### 解题思路
+
+先全部都是a
+然后从最高位变z如果数值仍然小于k往前位查看（如果等于，最高位变化为"z"，输出完事），前推同理
+往前位某位如果数值大于k，说明这一位变化完就是结果，查看差多少，该位变化为差值的对应字母就完事
+![image.png](https://pic.leetcode-cn.com/1629568673-jGYDCH-image.png)
+
+### 代码
+
+* python
+
+```python
+class Solution(object):
+    def getSmallestString(self, n, k):
+        # 26个字符
+        s, target= ["a"] * n, 1 * n
+        dic = string.ascii_lowercase
+        for p in range(n-1,-1,-1):
+            target = target - 1 + 26
+            if target <= k:
+                s[p] = "z"
+                if target == k: return "".join(s)
+            elif target > k:
+                target -= 26
+                item = k - target
+                s[p] = dic[item-1]
+                return "".join(s)
+        return "".join(s)
+
+                    
+                
+        
+```
+
