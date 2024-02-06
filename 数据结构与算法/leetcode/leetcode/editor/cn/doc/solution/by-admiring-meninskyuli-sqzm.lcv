@@ -1,0 +1,25 @@
+# **- 思路**
+
+**要使生成最小字符串，则借助贪心思路，尽可能前缀是'a'，后缀是'z'，中间一个过渡字符。具体多少个'a'、多少个'z'，中间过渡字符是哪个字符，则通过数学计算得到。**
+
+后缀'z'的个数通过： **n1 = (k - n) // 25**  计算。
+
+![image.png](https://pic.leetcode.cn/1674686852-jnzPpt-image.png)
+
+python 两行实现，简单清晰。
+
+时间36 ms击败93.26%
+
+内存15.5 MB击败93.26%
+
+* []
+
+```python
+class Solution:
+    def getSmallestString(self, n: int, k: int) -> str:
+        
+        n1 = (k - n) // 25
+        return ('' if n1 == n else 'a' * (n - n1 - 1) + chr((k - n) % 25 + 97)) + 'z' * n1
+```
+
+**↓ 觉得不错的话，欢迎点赞、评论、收藏！ ^_^**

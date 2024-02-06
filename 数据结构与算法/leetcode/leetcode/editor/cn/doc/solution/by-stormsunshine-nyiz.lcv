@@ -1,0 +1,188 @@
+# 解法一
+
+## 思路和算法
+
+用 $s$ 表示生成的字符串，$s$ 的长度等于 $n$，数值等于 $k$，下标范围从 $0$ 到 $n - 1$。由于 $s$ 中的每个字母的数值都在范围 $[1, 26]$ 中，且 $n \le k \le 26n$，因此一定可以根据给定的 $n$ 和 $k$ 生成 $s$。
+
+为了使 $s$ 的字典序最小，应满足左边的字母尽可能小，右边的字母尽可能大。
+
+可以从右到左依次确定 $s$ 的每个字母，每次确定一个字母之后，将 $k$ 减去该字母对应的数值，然后继续确定剩余的字母。
+
+对于 $0 \le i < n$，当遍历到 $s[i]$ 时，其左侧有 $i$ 个字母，每个字母对应的数值至少为 $1$，因此其左侧的所有字母的数值之和至少为 $i$，当前字母 $s[i]$ 对应的数值至多为 $26$ 且至多为 $k - i$，为了使 $s$ 的字典序最小，当前字母 $s[i]$ 对应的数值应取 $\min(26, k - i)$。
+
+遍历结束之后，生成的 $s$ 即为符合要求的字典序最小的字符串。
+
+上述做法使用贪心策略，贪心策略的正确性说明如下。
+
+当遍历到 $s[i]$ 时，将 $s[i]$ 对应的最大数值记为 $\textit{val}$，将 $s[0]$ 到 $s[i - 1]$ 对应的最小数值之和记为 $\textit{sum}$。如果 $s[i]$ 取较小的字母，则将其对应的数值记为 $\textit{val}'$，将 $s[0]$ 到 $s[i - 1]$ 对应的数值之和记为 $\textit{sum}'$，此时有 $\textit{val} + \textit{sum} = \textit{val}' + \textit{sum}'$。由于 $\textit{val}'$ 对应的字母小于 $\textit{val}$ 对应的字母，因此 $\textit{val}' < \textit{val}$，$\textit{sum}' > \textit{sum}$。当 $\textit{sum}$ 和 $\textit{sum}'$ 对应的前 $i$ 个字母都是在数值之和确定情况下的字典序最小的前缀时，为了将 $\textit{sum}$ 的值增加到 $\textit{sum}'$，一定存在至少一个下标 $j < i$ 满足 $\textit{sum}'$ 对应的 $s[j]$ 大于 $\textit{sum}$ 对应的 $s[j]$，因此 $\textit{sum}'$ 对应的前缀大于 $\textit{sum}$ 对应的前缀，前 $i$ 个字母的数值之和等于 $\textit{sum}'$ 的字符串不可能是字典序最小的字符串。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public String getSmallestString(int n, int k) {
+        char[] array = new char[n];
+        for (int i = n - 1; i >= 0; i--) {
+            int val = Math.min(26, k - i);
+            array[i] = (char) ('a' + val - 1);
+            k -= val;
+        }
+        return new String(array);
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public string GetSmallestString(int n, int k) {
+        char[] array = new char[n];
+        for (int i = n - 1; i >= 0; i--) {
+            int val = Math.Min(26, k - i);
+            array[i] = (char) ('a' + val - 1);
+            k -= val;
+        }
+        return new string(array);
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n)$，其中 $n$ 是字符串的长度。需要构造长度为 $n$ 的字符串，生成每个字母的时间是 $O(1)$。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是字符串的长度。需要创建一个长度为 $n$ 的字符数组。由于 Java 中的 $\texttt{String}$ 类型的对象和 C# 中的 $\texttt{string}$ 类型的对象不可变，因此空间复杂度至少为 $O(n)$。
+
+# 解法二
+
+## 思路和算法
+
+也可以从左到右依次确定 $s$ 的每个字母，每次确定一个字母之后，将 $k$ 减去该字母对应的数值，然后继续确定剩余的字母。为了使 $s$ 的字典序最小，从左到右确定每个字母时应将每个字母取可能的最小字母。
+
+对于 $0 \le i < n$，当遍历到 $s[i]$ 时，其右侧有 $n - i - 1$ 个字母，每个字母对应的数值至多为 $26$，因此其右侧的所有字母的数值之和至多为 $26(n - i - 1)$，当前字母 $s[i]$ 对应的数值至少为 $1$ 且至少为 $k - 26(n - i - 1)$，为了使 $s$ 的字典序最小，当前字母 $s[i]$ 对应的数值应取 $\max(1, k - 26(n - i - 1))$。
+
+遍历结束之后，生成的 $s$ 即为符合要求的字典序最小的字符串。
+
+上述做法使用贪心策略，贪心策略的正确性说明如下。
+
+当遍历到 $s[i]$ 时，将 $s[i]$ 对应的最小数值记为 $\textit{val}$，则当 $s[i]$ 对应的数值等于 $\textit{val}$ 时可以生成符合要求的字符串，当 $s[i]$ 对应的数值小于 $\textit{val}$ 时不能生成符合要求的字符串。对于大于 $\textit{val}$ 的数值 $\textit{val}'$，$\textit{val}'$ 对应的字母一定大于 $\textit{val}$ 对应的字母，因此当 $s[i]$ 对应的数值大于 $\textit{val}$ 时，生成的 $s$ 一定不是字典序最小的字符串。
+
+## 代码
+
+* [sol2-Java]
+
+```Java
+class Solution {
+    public String getSmallestString(int n, int k) {
+        char[] array = new char[n];
+        for (int i = 0; i < n; i++) {
+            int val = Math.max(1, k - 26 * (n - i - 1));
+            array[i] = (char) ('a' + val - 1);
+            k -= val;
+        }
+        return new String(array);
+    }
+}
+```
+
+* [sol2-C#]
+
+```C#
+public class Solution {
+    public string GetSmallestString(int n, int k) {
+        char[] array = new char[n];
+        for (int i = 0; i < n; i++) {
+            int val = Math.Max(1, k - 26 * (n - i - 1));
+            array[i] = (char) ('a' + val - 1);
+            k -= val;
+        }
+        return new string(array);
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n)$，其中 $n$ 是字符串的长度。需要构造长度为 $n$ 的字符串，生成每个字母的时间是 $O(1)$。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是字符串的长度。需要创建一个长度为 $n$ 的字符数组。由于 Java 中的 $\texttt{String}$ 类型的对象和 C# 中的 $\texttt{string}$ 类型的对象不可变，因此空间复杂度至少为 $O(n)$。
+
+# 解法三
+
+## 思路和算法
+
+当 $s$ 是符合要求的字典序最小的字符串时，$s$ 中的所有字母一定按升序排序。理由如下：假设存在 $0 \le i < j < n$ 满足 $s[i] > s[j]$，则交换 $s[i]$ 和 $s[j]$ 之后可以将 $s$ 变成字典序更小的字符串。
+
+当 $s$ 是符合要求的字典序最小的字符串时，$s$ 中至多有一个字母大于 $\text{a}$ 且小于 $\text{z}$，其余字母一定是 $\text{a}$ 或 $\text{z}$。理由如下。
+
+假设 $s$ 中存在多个字母大于 $\text{a}$ 且小于 $\text{z}$，则由于 $s$ 中的所有字母按升序排序，因此所有大于 $\text{a}$ 且小于 $\text{z}$ 的字母在 $s$ 中连续。任意两个相邻字母的数值之和的范围是 $[2, 52]$，在保持两个相邻字母的数值之和不变的情况下，当数值之和小于等于 $27$ 时可以将前一个字母改成 $\text{a}$ 且确保后一个字母小于等于 $\text{z}$，当数值之和大于等于 $27$ 时可以将后一个字母改成 $\text{z}$ 且确保前一个字母大于等于 $\text{a}$，更改之后不会出现两个相邻字母都大于 $\text{a}$ 且小于 $\text{z}$ 的情况，且得到的字符串的字典序更小。
+
+根据上述分析可知，当 $s$ 是符合要求的字典序最小的字符串时，$s$ 可以分成三个部分：左边部分是由 $\text{a}$ 组成的前缀，中间部分是大于 $\text{a}$ 且小于 $\text{z}$ 的子串，右边部分是由 $\text{z}$ 组成的后缀。三个部分的长度之和等于 $n$，每个部分的长度都可以是 $0$，中间部分的长度不超过 $1$。分别生成三个部分之后，即可生成 $s$。
+
+具体做法如下。
+
+1. 记 $\textit{increase} = k - n$。假设 $s$ 中的所有字母都是 $\text{a}$，则 $s$ 的数值等于 $n$，需要将 $s$ 的数值增加 $\textit{increase}$ 之后才能变成 $k$。
+
+2. 优先考虑右边部分的长度，将每个 $\text{a}$ 改成 $\text{z}$ 之后，$s$ 的数值增加 $25$。记 $\textit{rightCount} = \Big\lfloor \dfrac{\textit{increase}}{25} \Big\rfloor$，$\textit{leftCount} = n - \textit{rightCount}$，则右边部分的长度是 $\textit{rightCount}$，左边部分与中间部分的长度之和是 $\textit{leftCount}$。
+
+3. 将 $s$ 的前 $\textit{leftCount}$ 个下标都填入 $\text{a}$。如果 $\textit{leftCount} > 0$，则将 $s[\textit{leftCount} - 1]$ 处的字母增加 $\textit{increase} \bmod 25$。
+
+4. 将 $s$ 的后 $\textit{rightCount}$ 个下标都填入 $\text{z}$。
+
+## 代码
+
+* [sol3-Java]
+
+```Java
+class Solution {
+    public String getSmallestString(int n, int k) {
+        char[] array = new char[n];
+        int increase = k - n;
+        int rightCount = increase / 25;
+        int leftCount = n - rightCount;
+        for (int i = 0; i < leftCount; i++) {
+            array[i] = 'a';
+        }
+        if (leftCount > 0) {
+            array[leftCount - 1] += increase % 25;
+        }
+        for (int i = n - rightCount; i < n; i++) {
+            array[i] = 'z';
+        }
+        return new String(array);
+    }
+}
+```
+
+* [sol3-C#]
+
+```C#
+public class Solution {
+    public string GetSmallestString(int n, int k) {
+        char[] array = new char[n];
+        int increase = k - n;
+        int rightCount = increase / 25;
+        int leftCount = n - rightCount;
+        for (int i = 0; i < leftCount; i++) {
+            array[i] = 'a';
+        }
+        if (leftCount > 0) {
+            array[leftCount - 1] = (char) (array[leftCount - 1] + increase % 25);
+        }
+        for (int i = n - rightCount; i < n; i++) {
+            array[i] = 'z';
+        }
+        return new string(array);
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n)$，其中 $n$ 是字符串的长度。需要构造长度为 $n$ 的字符串，生成每个字母的时间是 $O(1)$。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是字符串的长度。需要创建一个长度为 $n$ 的字符数组。由于 Java 中的 $\texttt{String}$ 类型的对象和 C# 中的 $\texttt{string}$ 类型的对象不可变，因此空间复杂度至少为 $O(n)$。
+

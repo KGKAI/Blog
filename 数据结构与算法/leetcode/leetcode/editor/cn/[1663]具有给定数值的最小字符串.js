@@ -45,20 +45,19 @@
  * @return {string}
  */
 var getSmallestString = function(n, k) {
-    let ans = '';
-    for (let rest = n; rest >= 1; rest--) {
-        // 现在我要开始放了，放之前看看你能不能放得下n-1个z
-        const bound = k - 26 * (rest - 1);
-        if (bound > 0) {
-            ans += String.fromCharCode('a'.charCodeAt() + bound - 1);
-            k -= bound;
-        } else {
-            ans += 'a';
-            k -= 1;
-        }
+  let res = ''
+  for (let rest = n; rest > 0; rest--) {
+    const bound = k - 26 * (rest - 1)
+    if (bound > 0) {
+      res += String.fromCharCode('a'.charCodeAt() + bound - 1)
+      k -= bound
+    } else {
+      res += 'a'
+      k -= 1
     }
+  }
 
-    return ans;
+  return res
 };
 //leetcode submit region end(Prohibit modification and deletion)
 console.log(getSmallestString(5, 73))

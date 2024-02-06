@@ -1,0 +1,51 @@
+### 思路 ｜ 贪心
+
+- 首先将所有字符串都置为`a`
+
+- 从后往前，依次将第`i`位置成相应的字母，
+
+- 使用 `（k - n）/ 25` 计算出需要置为`z`的个数
+
+- 然后通过 `（k - n ) % 25 `计算出`z`之前的那一位应该置为多少
+
+- 超时是因为当n太大时，计算z的位数的过程中如果是按位遍历，计算次数太多。其实一步就能完成，`（k - n）/ 25`。
+
+### 代码
+
+* 
+
+```
+class Solution {
+public:
+    string getSmallestString(int n, int k) {
+        string res(n, 'a');
+        int bound = (k - n) / 25; // 需要置为 ‘z’的数量
+        int r = (k - n) % 25; // 第一个 z 前面那位
+        if (n - bound - 1 >= 0) res[n-bound-1] = 'a' + r;
+        for (int i = n - bound; i < n; i++) {
+            res[i] = 'z';
+        }
+        return res;
+    }
+};
+```
+
+或者更直接一点：
+
+* 
+
+```
+class Solution {
+public:
+    string getSmallestString(int n, int k) {
+        string res(n, 'a');
+        int bound = (k - n) / 25; // 需要置为 ‘z’的数量
+        int r = (k - n) % 25; // 第一个 z 前面那位
+        if (n - bound - 1 < 0) {
+            return string(bound, 'z');
+        } 
+        return string (n - bound - 1, 'a') + string(1, 'a' + r) + string(bound, 'z');
+    }
+};
+```
+
