@@ -1,0 +1,26 @@
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersect = function(nums1, nums2) {
+    nums1.sort((a, b) => a - b)
+    nums2.sort((a, b) => a - b)
+    let i = 0, j = 0;
+    let res = [];
+    while (i < nums1.length && j < nums2.length) {
+        const num1 = nums1[i], num2 = nums2[j];
+        if (num1 === num2) {
+            res.push(num1);
+            i++;
+            j++;
+        } else if (num1 < num2) {   // 移动元素较小的指针，以便于后续的比较
+            i++;
+        } else {
+            j++;
+        }
+    }
+    return res;
+};
+//runtime:60 ms
+//memory:42.2 MB

@@ -1,0 +1,57 @@
+> Problem: [19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
+
+[TOC]
+
+# 思路
+
+倒数的要点就是要求出链表的长度，以此不得不遍历一边整个链表而为了节省时间。如何只遍历一遍就能找到倒数第n个节点便成了关键。于是就可以想到双指针。
+
+# 解题方法
+
+利用数学方法，因为要删除结点也就是将倒数n+1的结点接上倒数第n-1的结点，所有先引入第一个指针指向正数第n个结点。紧接着引入第二个指针与第一个指针一同遍历直到第一个指针遍历结束。遍历期间两个指针之间恒差n，而此时第一个指针位置在倒数第一个结点，第二个指针在倒数第n+1个结点。返回第二个指针，后续就不赘述了....
+
+# Code
+
+* []
+
+```Java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n){
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
+        ListNode x  = findFromEnd(dummy, n+1);
+        // 删掉倒数第 n 个节点
+        x.next = x.next.next;
+        return dummy.next;
+    }
+    // 返回链表的倒数第 k 个节点
+    private ListNode findFromEnd(ListNode head, int k){
+        ListNode p1 = head;
+        ListNode p2 = head;
+        // p2 先走 k 步
+        for(int i = 0; i < k; i++){
+            p2 = p2.next;
+        }
+        // p1 和 p2 同时走 n - k 步
+        while(p2 != null){
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        // p1 现在指向第 n - k 个节点
+        return p1;
+    }
+}
+```
+

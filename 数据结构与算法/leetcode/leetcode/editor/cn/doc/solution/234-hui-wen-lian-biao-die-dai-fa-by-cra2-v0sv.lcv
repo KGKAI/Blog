@@ -1,0 +1,68 @@
+> Problem: [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/description/)
+
+[TOC]
+
+# 解题方法
+
+迭代法把前半链表反转，然后同时遍历两个链表，发现不相同return false，遍历完了return true.
+
+# 复杂度
+
+时间复杂度:
+
+> $O(n)$
+
+空间复杂度:
+
+> $O(1)$
+
+# Code
+
+* []
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode *t = head;
+        int len = 0;
+        while (t) {
+            len++;
+            t = t->next;
+        }
+        if (len <= 1) {
+            return true;
+        }
+
+        t = head;
+        ListNode *np = nullptr;
+        for (int i = 0; i < len / 2; i++) {
+            ListNode *next = t->next;
+            t->next = np;
+            np = t;
+            t = next;
+        }
+        if (len % 2) {
+            t = t->next;
+        }
+
+        while (t) {
+            if (t->val != np->val) return false;
+            t = t->next;
+            np = np->next;
+        }
+        return true;
+    }
+};
+```
+

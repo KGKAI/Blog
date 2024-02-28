@@ -1,0 +1,95 @@
+> Problem: [19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
+
+[TOC]
+
+# 思路
+
+> 本题是快慢指针的经典应用，若你也对为什么使用快慢指针，以及为什么这么用快慢指针存有疑惑，相信本文将对你有所帮助。
+
+- 首先，我们容易想到的一种方法是对该数组进行遍历得到size，要得到倒数第n个节点的上一个节点即倒数n-1个数for (int i = size; i > n; i--)，不难发现，倒数n-1个数即正数size-n个数，至此我们便得到了要求删除的节点的上一个节点，正常使用删除操作即可完成本题的模拟！
+- 那么，有没有一种方法可以省去我们求size的时间呢？我们可以发现，走size步其实可以拆解为走n+1步和走size-n-1步！那么我们多走一步就能得到所需的size-n步，如果我们使用一个快指针fast先走n+1步，再让slow指针和fast指针一起走，直到fast走了size+1步，slow便走了size-n步，也就是走到了所需删除节点的上一个节点！这就是为什么快指针要走n+1步！
+
+# 解题方法
+
+> 法一：
+> 1.遍历链表得到size
+> 2.走size-n步得到待删除节点的上一个节点
+> 3.删除操作
+> 法二：
+> 1.快指针先走n+1步
+> 2.快慢指针同步走，直到快指针走了size+1步，即fast==nullptr;
+> 3.删除操作
+
+# 复杂度
+
+时间复杂度:
+
+> 都是一重遍历链表： $O(n)$
+
+空间复杂度:
+
+> 没有额外开辟空间： $O(1)$
+
+# 法一：
+
+* C++
+
+```C++
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dumpy = new ListNode(-1);
+        dumpy->next = head;
+        ListNode* cur = dumpy;
+        int size = 0;
+        while (cur->next != nullptr) {
+            cur = cur->next;
+            size++;
+        }
+        cur = dumpy;
+        for (int i = size; i > n; i--)
+            cur = cur->next;
+        ListNode* tmp = cur->next;
+        cur->next = cur->next->next;
+        delete tmp;
+        tmp = nullptr;
+        return dumpy->next;
+    }
+};
+```
+
+# 法二：
+
+* []
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dumpy = new ListNode(-1);
+        dumpy->next = head;
+        ListNode* fast = dumpy;
+        ListNode* slow = dumpy;
+        while (n--)
+            fast = fast->next;
+        fast = fast->next;
+        while (fast != nullptr) {
+            fast = fast->next;
+            slow = slow->next;
+        }
+        slow->next = slow->next->next;
+        return dumpy->next;
+    }
+};
+```
+
