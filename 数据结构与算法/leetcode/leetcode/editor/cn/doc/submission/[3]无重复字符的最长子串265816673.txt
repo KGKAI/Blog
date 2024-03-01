@@ -1,0 +1,28 @@
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function(s) {
+    let len = 0;
+    let left = 0, right = 0;
+    let window = {};
+
+    while (right < s.length) {
+        // 增大窗口
+        const c = s[right];
+        right++;
+        window[c] = window[c] ? window[c] + 1 : 1;
+        // 遇到重复字符，缩小窗口
+        while (window[c] > 1) {
+            // 从左侧开始，移出窗口
+            let lc = s[left];
+            left++;
+            window[lc]--;
+        }
+        len = Math.max(right - left, len);
+    }
+
+    return len;
+};
+//runtime:100 ms
+//memory:47.4 MB

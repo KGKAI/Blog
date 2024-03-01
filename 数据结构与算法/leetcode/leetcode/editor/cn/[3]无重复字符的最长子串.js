@@ -44,20 +44,22 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function(s) {
-    let left = 0, right = 0, window = {}
-    let max = 0;
-    while (right < s.length) {
-        const char = s[right];
-        right++;
-        window[char] = (window[char] || 0) + 1
-        while (window[char] > 1) {
-            const lc = s[left];
-            left++;
-            window[lc]--
-        }
-        max = Math.max(right - left, max)
+  let l = 0, r = 0, window = {}
+  let max = 0
+  while(r < s.length) {
+    // 1. 将当前字符串添加到窗口里
+    const char = s[r]
+    window[char] ? window[char]++ : window[char] = 1
+    while(window[char] > 1) { // 2. 如果存在重复的字符, 收缩窗口
+      const leftChar = s[l]
+      window[leftChar]--
+      l++
     }
+    max = Math.max(max, r - l + 1)
+    r++
+  }
 
-    return max
+  return max
 };
+console.log(lengthOfLongestSubstring('abcabcbb'))
 //leetcode submit region end(Prohibit modification and deletion)

@@ -1,0 +1,44 @@
+### 思路
+
+1. 滑动窗口，保证每个窗口里字母都是唯一的
+   ![图片.png](https://pic.leetcode-cn.com/8b7cac826e572c65f8b77e0f380eaa93ab665857a8e916bc4ea36b7765eafc55-%E5%9B%BE%E7%89%87.png)
+
+2. 使用 `vector<int> m` 来记录一个字母如果后面出现重复时，`i` 应该调整到的新位置
+
+   21. 所以每次更新的时候都会保存 `j + 1` ，即字母后面的位置
+3. `j` 表示子串的最后一个字母，计算子串长度为 `j - i + 1`
+
+### 答题
+
+* []
+
+```C++
+int lengthOfLongestSubstring(string s) {
+    vector<int> m(128, 0);
+    int ans = 0;
+    int i = 0;
+    for (int j = 0; j < s.size(); j++) {
+        i = max(i, m[s[j]]);
+        m[s[j]] = j + 1;
+        ans = max(ans, j - i + 1);
+    }
+    return ans;
+}
+```
+
+### 模拟
+
+* 
+
+```
+输入: "dvdf"
+输出: 3 
+```
+
+<![图片.png](https://pic.leetcode-cn.com/b2a9064326989bd35326f55261e78a68d4db37ac7b02f231eca74353d6ca020a-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/ce0b19e413de173149d8850f457bf6654a0b81f33064d6f77d24d6a21ff089c8-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/fc4ec3d8e86c34ef6fa68a6caec23c6fb1aaaa149c64930c3b0da8cdc4185b84-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/5441d943b2c7fdf0150ce5b2cd323689cba095a52bc01c284355b28dbc3cf115-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/5c7c1987e551f2855f08db381df45f79ba121a80a6b9889009426f1b729f4558-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/9e4ec82f4098a48ddb97c2f169bf4daf74123191a306159f68855d5fe2f38677-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/701874f7b62b193f01c610e196540d7509eefc2cb7eb7422be3a6f70981f2d33-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/1c244722bc4fd7bd3ca40d0dff1587de4a5ff49470e48d0290475d6a51c750b8-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/df869e3cd14bf4f15d186aed041aaf4c17a3a7881c5d376e9acd5bc9b27c4c6f-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/56577d18458a6601bff7226aa5ed0ea0f44cb03753c31cb3451225814c2a5d14-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/c366f8b42f727e9313a6c89cc345b2afc72df4ee5f79b7976de9e191d33b3579-%E5%9B%BE%E7%89%87.png),![图片.png](https://pic.leetcode-cn.com/50e2dcdf44a0d431ffd00e2452a7c7524c408f78db69c524bffc45ee7eb187be-%E5%9B%BE%E7%89%87.png)>
+
+### 致谢
+
+感谢您的观看，希望对您有帮助，欢迎热烈的交流！
+
+**如果感觉还不错就点个赞吧~**

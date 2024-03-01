@@ -1,0 +1,27 @@
+/**
+ * 经典的二维动态规划
+ * dp[i][j]代表text1[0...i]和text2[0...j]的最长公共子序列的长度
+ * 状态转移方程：当text1[i] === text2[j]时，说明找到了一个公共字符，所以dp[i][j] = dp[i-1][j-1] + 1
+ * 当text1[i] !== text2[j],取dp[i-1][j]和dp[i][j-1]的最大值
+ *
+ * bad case
+ * dp[0][j] 和dp[i][0] 一个字符串和空字符串计算，一定得到0,我们可以把数组初始化为0
+  * @param text1
+ * @param text2
+ */
+ var longestCommonSubsequence = function(text1, text2) {
+    const dp = new Array(text1.length + 1).fill(0).map(item => new Array(text2.length + 1).fill(0))
+    for (let i = 1; i <= text1.length; i++) {
+        for (let j = 1; j <= text2.length; j++) {
+            if (text1[i - 1] === text2[j - 1]) {
+                dp[i][j] = dp[i-1][j-1] + 1
+            } else {
+                dp[i][j] = Math.max(dp[i][j-1], dp[i-1][j])
+            }
+        }
+    }
+
+    return dp[text1.length][text2.length]
+};
+//runtime:100 ms
+//memory:55.9 MB

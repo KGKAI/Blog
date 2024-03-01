@@ -1,0 +1,30 @@
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function(s) {
+  let l = 0, r = 0, window = {}
+  let max = 0
+  while(r < s.length) {
+    // 1. 将当前字符串添加到窗口里
+    const char = s[r]
+    window[char] ? window[char]++ : window[char] = 1
+    while(window[char] > 1) { // 2. 如果存在重复的字符, 收缩窗口
+      max = Math.max(max, r - l)
+      const leftChar = s[l]
+      window[leftChar]--
+      l++
+    }
+    r++
+  }
+
+  return max
+};
+console.log(lengthOfLongestSubstring('pwwkew'))
+
+//total_testcases:987
+//total_correct:879
+//input_formatted:" "
+//expected_output:1
+//code_output:0
+//last_testcase:" "
