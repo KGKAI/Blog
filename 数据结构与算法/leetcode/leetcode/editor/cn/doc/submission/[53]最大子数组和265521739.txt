@@ -1,0 +1,42 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+// var maxSubArray = function(nums) {
+//     if (nums.length === 0) return 0;
+
+//     // bad cass 第一个元素
+//     let dp_0 = nums[0];
+//     let dp_1 = -Infinity;
+//     let res = dp_0;
+//     for (let i = 1; i < nums.length; i++) {
+//         dp_1 = Math.max(nums[i], nums[i] + dp_0);
+//         dp_0 = dp_1;
+//         res = Math.max(res, dp_1)
+//     }
+
+//     return res
+// };
+
+var maxSubArray = function(nums) {
+    if (nums.length === 0) return 0;
+
+    let sum = nums[0]
+    let res = nums[0]
+    for (let i = 1; i < nums.length; i++) {
+        let temp = sum + nums[i]
+        if (temp < nums[i]) {
+            sum = nums[i]
+        } else {
+            sum = temp
+        }
+        res = Math.max(res, sum)
+    }
+
+    return res
+};
+
+console.log(maxSubArray([-2,1]))
+
+//runtime:76 ms
+//memory:49.4 MB

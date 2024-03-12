@@ -1,0 +1,18 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findLengthOfLCIS = function(nums) {
+  let res = 0
+  for (let i = 0; i < nums.length; i++) {
+    let ori = i
+    while(i < nums.length && nums[i + 1] && nums[i + 1] > nums[i]) i++
+    res = Math.max(i - ori + 1, res)
+  }
+
+  return res
+};
+console.log(findLengthOfLCIS([1,3,5,4,7]))
+
+//runtime:56 ms
+//memory:49.9 MB

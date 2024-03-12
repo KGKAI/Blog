@@ -1,0 +1,47 @@
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+ var restoreIpAddresses = function(s) {
+    const ipSegment = 4;
+    const res = [], path = [];
+    const len = s.length;
+  
+    dfs(s, len, 0, ipSegment);
+    function dfs(s, len, begin, rest) {
+      if (begin === len) {
+        if (rest === 0) {
+          res.push(path.join('.'))
+        }
+        return
+      }
+  
+      for (let i = begin; i < begin + 3; i++) {
+        if (i >= len) break;
+  
+        if (rest * 3 < len - i) continue;
+  
+        if (judgeIpSegment(s, begin, i)) {
+          const str = s.slice(begin, i + 1)
+          path.push(str)
+          dfs(s, len, i + 1, rest - 1)
+          path.pop(str)
+        }
+      }
+    }
+  
+    function judgeIpSegment(s, left, right) {
+      let len = right - left + 1
+      if (len > 1 && s.charAt(left) === '0') {
+        return false
+      }
+  
+      const str = s.slice(left, right + 1)
+  
+      return +str >=0 && +str <= 255;
+    }
+  
+    return res
+  };
+//runtime:80 ms
+//memory:39.7 MB

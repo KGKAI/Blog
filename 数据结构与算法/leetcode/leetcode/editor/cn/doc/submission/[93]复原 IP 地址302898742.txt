@@ -1,0 +1,38 @@
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses = function (s) {
+    const res = [];
+    const path = [];
+    dfs(0, 4);
+
+    return res;
+    function dfs(begin, rest) {
+        if (begin === s.length) {
+            if (rest === 0) {
+                res.push(path.join('.'))
+                return;
+            }
+        }
+
+        for (let i = begin; i < begin + 3; i++) {
+            if (i >= s.length) return;
+            if (judge(s, begin, i)) {
+                path.push(s.slice(begin, i + 1));
+                dfs(i + 1, rest - 1);
+                path.pop();
+            }
+        }
+    }
+
+    function judge(s, left, right) {
+        const len = right - left + 1;
+        if (len > 3) return false;
+        const str = s.slice(left, right + 1);
+        if (len > 1 && str[0] === '0') return false;
+        return +str >= 0 && +str <= 255;
+    }
+};
+//runtime:68 ms
+//memory:43.1 MB

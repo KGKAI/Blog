@@ -49,18 +49,20 @@
  * @return {string[]}
  */
 var restoreIpAddresses = function(s) {
+  if (s.length < 4 || s.length > 12) return []
   const res = []
-
-  function dfs(path, index) {
-    if (path.length === 4 && index === s.length) {
-      res.push(path.join('.'))
+  const dfs = (path, start) => {
+    if (path.length === 4) {
+      if (start === s.length) {
+        res.push(path.join('.'))
+      }
       return
     }
 
-    for (let i = index; i < index + 3; i++) {
-      if (i >= s.length) return
-      const str = s.slice(index, i + 1)
-      if (judge(str)) {
+    if (s.length - start > (4 - path.length) * 3) return
+    for (let i = start; i < start + 3; i++) {
+      const str = s.slice(start, i + 1)
+      if (isValid(str)) {
         path.push(str)
         dfs(path, i + 1)
         path.pop()
@@ -68,22 +70,17 @@ var restoreIpAddresses = function(s) {
     }
   }
 
-  function judge(str) {
-    const len = str.length
-    if (len > 3) return false
-    if (len > 1 && str[0] === '0') return false
-    let sum = 0;
-    for (let i = 0; i < len; i++) {
-      sum = sum * 10 + Number(str[i])
-    }
-    if (sum > 255) return false
-    return true
-  }
-
   dfs([], 0)
-
   return res
 };
+
+function isValid(str) {
+  const len = str.length
+  if (len > 3) return
+  if (len > 1 && str[0] === '0') return false
+  if (+str > 255) return false
+  return true
+}
 
 console.log(restoreIpAddresses("101023"))
 //leetcode submit region end(Prohibit modification and deletion)
