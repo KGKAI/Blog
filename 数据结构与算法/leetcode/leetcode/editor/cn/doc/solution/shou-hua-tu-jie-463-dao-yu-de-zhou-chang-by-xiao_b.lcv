@@ -1,0 +1,140 @@
+#### 思路
+
+一块土地原则上会带来 4 个周长，但岛上的土地存在接壤，每一条接壤，会减掉 2 个边长。
+
+所以，总周长 = 4 * 土地个数 - 2 * 接壤边的条数。
+
+遍历矩阵，遍历到土地，就 land++，如果它的右/下边也是土地，则 border++，遍历结束后代入公式。
+
+![image.png](https://pic.leetcode-cn.com/1604015527-lMKlFe-image.png)
+
+#### 代码
+
+* []
+
+```javascript
+const islandPerimeter = (grid) => {
+  let land = 0; // 土地个数
+  let border = 0; // 接壤边界的条数
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (grid[i][j] == 1) {
+        land++;
+        if (i < grid.length - 1 && grid[i + 1][j] == 1) {
+          border++;
+        }
+        if (j < grid[0].length - 1 && grid[i][j + 1] == 1) {
+          border++;
+        }
+      }
+    }
+  }
+  return 4 * land - 2 * border;
+};
+```
+
+* []
+
+```go
+func islandPerimeter(grid [][]int) int {
+	var land, border int
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[0]); j++ {
+			if grid[i][j] == 1 {
+				land++
+				if i < len(grid)-1 && grid[i+1][j] == 1 {
+					border++
+				}
+				if j < len(grid[0])-1 && grid[i][j+1] == 1 {
+					border++
+				}
+			}
+		}
+	}
+	return 4*land - 2*border
+}
+```
+
+#### 方法 2：DFS
+
+岛就一个，我们从第一个遇到的土地开始深搜。
+
+对于每个土地节点，做一些事情，基于它，递归上下左右四个点，做同样的事情。做什么事情呢？
+
+从土地到土地，之间不会产生周长，但从土地迈入海洋，之间会产生 1 个周长，从土地迈出矩阵边界，也会产生 1 个周长。
+
+dfs 的过程中，对当前点的上下左右递归，下一个递归的点又对上下左右递归，就会造成重复访问，造成周长的重复计算。
+
+遍历过的土地节点，将值改为 2，区分于 1 和 0，代表访问过了。
+
+#### 总结
+
+DFS 从一个点，向四周扩散，目标是遇到矩阵边界或海水，它们是答案已知的 base case，是位于递归树底部的 case，是递归的终止条件。
+
+从上而下递归调用，随着递归的出栈，子问题的解自下而上地返回，最后得出大问题的解。
+
+#### 代码
+
+* []
+
+```js
+const islandPerimeter = (grid) => {
+  const dfs = (i, j) => {
+    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) {
+      return 1; // 当前正好越界，说明穿过了一个边界，周长+1
+    }
+    if (grid[i][j] == 0) { // 从土地来到了海水，说明穿过了一个边界，周长+1
+      return 1;
+    }
+    if (grid[i][j] == 2) { // 之前访问过，直接返回，返回0，无周长收益
+      return 0;
+    }
+    // 到此，当前点为1，将它改为2，代表已访问
+    grid[i][j] = 2; 
+    // 继续往四个方向“扩散”，目标是遇到边界和海水，答案随着递归出栈向上返回，得出大的答案
+    return dfs(i - 1, j) + dfs(i + 1, j) + dfs(i, j - 1) + dfs(i, j + 1);
+  };
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (grid[i][j] == 1) {
+        return dfs(i, j);   // dfs的入口
+      }
+    }
+  }
+  return 0;
+};
+```
+
+* []
+
+```go
+func islandPerimeter(grid [][]int) int {
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[0]); j++ {
+			if grid[i][j] == 1 {
+				return dfs(i, j, grid)
+			}
+		}
+	}
+	return 0
+}
+// 这个奇怪的缩进是编辑器的bug，自动变这样了
+func dfs(x, y int, grid [][]int) int {
+	if x < 0 || x > len(grid)-1 || y < 0 || y > len(grid[0])-1 {
+		return 1
+	}
+	if grid[x][y] == 0 {
+		return 1
+	}
+	if grid[x][y] == 2 {
+		return 0
+	}
+	grid[x][y] = 2
+	return dfs(x+1, y, grid) + dfs(x-1, y, grid) + dfs(x, y+1, grid) + dfs(x, y-1, grid)
+}
+```
+
+#### 感谢阅读。祝你有愉快的一天。
+

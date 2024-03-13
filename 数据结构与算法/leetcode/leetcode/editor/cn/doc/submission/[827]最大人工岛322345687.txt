@@ -1,0 +1,72 @@
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var largestIsland = function(grid) {
+    const m = grid.length;
+    const n = grid[0].length;
+    let maxArea = 0;
+    let index = 2;
+    const indexToAreaMap = new Map();   // 记录索引与面积的关系
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (grid[i][j] === 1) {
+                const area = dfs(grid, i, j, index);
+                maxArea = Math.max(maxArea, area);
+                indexToAreaMap.set(index, area);
+                index++;
+            }
+        }
+    }
+
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (grid[i][j] === 0) {
+                const set = getNeighbour(grid, i, j);
+                let area = 1;
+                for (const i of set) {
+                    area += indexToAreaMap.get(i);
+                }
+                maxArea = Math.max(maxArea, area);
+            }
+        }
+    }
+
+    function dfs(grid, i, j, index) {
+        if (i < 0 || i >= m || j < 0 || j >= n) return 0;
+        if (grid[i][j] !== 1) return 0;
+
+        grid[i][j] = index;
+        return 1 + dfs(grid, i - 1, j , index) + dfs(grid, i + 1, j, index)
+            + dfs(grid, i, j - 1, index) + dfs(grid, i, j + 1, index);
+    }
+
+    function getNeighbour(grid, i, j) {
+        const set = new Set();
+        if (inArea(i - 1, j) && grid[i - 1][j] >= 2) {
+            set.add(grid[i - 1][j])
+        }
+
+        if (inArea(i + 1, j) && grid[i + 1][j] >= 2) {
+            set.add(grid[i + 1][j])
+        }
+
+        if (inArea(i, j - 1) && grid[i][j - 1] >= 2) {
+            set.add(grid[i][j - 1])
+        }
+
+        if (inArea(i, j + 1) && grid[i][j + 1] >= 2) {
+            set.add(grid[i][j + 1])
+        }
+
+        return set;
+    }
+
+    function inArea(i, j) {
+        return i >= 0 && i < m && j >= 0 && j < n;
+    }
+
+    return maxArea;
+};
+//runtime:208 ms
+//memory:60.6 MB
