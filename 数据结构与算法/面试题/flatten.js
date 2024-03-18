@@ -12,21 +12,34 @@
 // console.log(res)
 
 // 递归实现
-function flatten(arr) {
-    let res = []
-    arr.map(item => {
-        if (Array.isArray(item)) {
-            res.push(...flatten(item))
-        } else {
-            res.push(item)
-        }
-    });
+// function flatten(arr) {
+//     let res = []
+//     arr.map(item => {
+//         if (Array.isArray(item)) {
+//             res.push(...flatten(item))
+//         } else {
+//             res.push(item)
+//         }
+//     });
+//
+//     return res;
+// }
 
-    return res;
+// let arr = [1,2,3, [4, [5, 6]], 7, [8,9]]
+// console.log(flatten(arr))
+// console.log(arr.join(','))
+// console.log(arr.join(',').split(','))
+// console.log(arr.join(',').split(',').map(item => Number(item)))
+
+// 带展开层数的拍平
+function flatten(arr, count = 1) {
+  while(arr.some((item) => Array.isArray(item)) && count > 0) {
+    arr = [].concat(...arr)
+    count--
+  }
+
+  return arr
 }
 
-let arr = [1,2,3, [4, [5, 6]], 7, [8,9]]
-// console.log(flatten(arr))
-console.log(arr.join(','))
-console.log(arr.join(',').split(','))
-// console.log(arr.join(',').split(',').map(item => Number(item)))
+const arr = [1, [2, 3], [4, [5, 6]]]
+console.log(flatten(arr))
