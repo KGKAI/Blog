@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 function fn(a, b, c) {
   return a + b + c
 }
@@ -18,7 +17,6 @@ const curry = (fn) => {
 const add = curry(fn)
 // add(1)(2)(3)
 console.log(add(1)(2)(3))
-=======
 // https://www.cnblogs.com/yalong/p/14298085.html
 
 // 1、函数参数固定
@@ -58,4 +56,3 @@ function add(...args) {
 }
 
 console.log(add(1)(2)(3,4) + '')
->>>>>>> Stashed changes

@@ -72,13 +72,17 @@ function promiseAll(promises, max) {
 
 function ajax(i) {
     return new Promise(resolve => {
+      let wait = 1000
+      if (i === 4) {
+        wait = 5000
+      }
         setTimeout(() => {
             resolve(i)
-        }, 1000);
+        }, wait);
     })
 }
 
-let arr = Array.from({ length: 100 }, (v, i) => () => ajax(i))
+let arr = Array.from({ length: 10 }, (v, i) => () => ajax(i))
 // console.log(arr)
 console.time('start')
 promiseAll(arr, 5).then(v => {

@@ -1,20 +1,47 @@
-// 实现一个批量请求函数 multiRequest(urls, maxNum)，要求如下：
-// • 要求最大并发数 maxNum
-// • 每当有一个请求返回，就留下一个空位，可以增加新的请求
-// • 所有请求完成后，结果按照 urls 里面的顺序依次打出
-
-function fakeRequest(url) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(url + '返回了')
-    }, Math.floor(10 * Math.random()))
-  })
-}
 function multiRequest(urls, maxNum) {
-  const queue = []
-  let count  = 0
-  const res = []
-  for (let i = 0; i < urls.length; i++) {
-    queue.push(() => fakeRequest(urls[i]))
+  let count = 0, queue = [], res = [], resolvedCount = 0
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < urls.length; i++) {
+      queue.push(() => {
+        request(urls[i], i).then((data) => {
+          console.log(data)
+          res[i] = data
+          count--
+          resolvedCount++
+          if (urls.length === resolvedCount) {
+            resolve(res)
+          }
+          run()
+        })
+      })
+    }
+
+    run()
+  })
+
+  function run() {
+    while(queue.length > 0 && count <= maxNum) {
+      count++
+      const cb = queue.shift()
+      cb()
+    }
   }
 }
+
+function request(url, index) {
+  return new Promise((resolve, reject) => {
+    let wait = 1000
+    if (index === 2) {
+      wait = 3000
+    }
+    setTimeout(() => {
+      resolve(url + ' resolve')
+    }, wait)
+  })
+}
+
+console.time('a')
+multiRequest(['a', 'b', 'c', 'd', 'e'], 3).then((res) => {
+  console.log(res)
+  console.timeEnd('a')
+})
