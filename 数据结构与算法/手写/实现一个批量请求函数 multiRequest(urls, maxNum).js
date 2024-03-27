@@ -12,7 +12,7 @@ function multiRequest(urls, maxNum) {
             resolve(res)
           }
           run()
-        })
+        }).catch((err) => reject(err))
       })
     }
 
@@ -20,7 +20,7 @@ function multiRequest(urls, maxNum) {
   })
 
   function run() {
-    while(queue.length > 0 && count <= maxNum) {
+    while(queue.length > 0 && count < maxNum) {
       count++
       const cb = queue.shift()
       cb()
@@ -30,11 +30,12 @@ function multiRequest(urls, maxNum) {
 
 function request(url, index) {
   return new Promise((resolve, reject) => {
-    let wait = 1000
-    if (index === 2) {
-      wait = 3000
-    }
+    let wait = 1000 * (index + 1)
+    console.log(wait)
     setTimeout(() => {
+      if (index === 2) {
+        reject('index 2 failed')
+      }
       resolve(url + ' resolve')
     }, wait)
   })
