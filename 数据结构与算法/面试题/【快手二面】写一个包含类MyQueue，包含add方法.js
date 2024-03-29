@@ -1,9 +1,9 @@
 /*
 写一个类MyQueue，包含add方法，给后台发送请求（调用ajax即可），限制同一时刻最多3个请求。add需要返回promise，
 如下 调用举例
-let myQueue = new MyQueue; 
-for (let i = 0; i < 100000; i++) { 
-    myQueue.add('消息xxxx').then(() => { 
+let myQueue = new MyQueue;
+for (let i = 0; i < 100000; i++) {
+    myQueue.add('消息xxxx').then(() => {
         console.log('消息xxxx发送成功')
     })
  }
@@ -18,9 +18,9 @@ class MyQueue {
         this.taskQueue = []
     }
 
-    add(caller, ...args) {
+    add(caller, i) {
         return new Promise((resolve, reject) => {
-            let task = this.createTask(caller, ...args, resolve, reject)
+            let task = this.createTask(caller, i, resolve, reject)
             if (this.count >= this.max) {
                 this.taskQueue.push(task)
             } else {
@@ -29,9 +29,9 @@ class MyQueue {
         })
     }
 
-    createTask(caller, args, resolve, reject) {
+    createTask(caller, i, resolve, reject) {
         return () => {
-            caller(args)
+            caller(i)
                 .then(resolve)
                 .catch(reject)
                 .finally(() => {
@@ -53,9 +53,9 @@ function ajax(i) {
         }, 1000);
     })
 }
-let myQueue = new MyQueue(5); 
-for (let i = 0; i < 100; i++) { 
-    myQueue.add(ajax, i, 0).then((v) => { 
+let myQueue = new MyQueue(5);
+for (let i = 0; i < 20; i++) {
+    myQueue.add(ajax, i).then((v) => {
         console.log(v)
     })
  }
